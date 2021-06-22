@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Warehouse.Bll.Dtos.ItemDto>
+@{
+    ViewBag.Title = "Items";
+    Layout = "_Layout";
+}
+<h1>Items</h1>
+<a asp-controller="Item" asp-action="CreateItem" class="btn btn-outline-dark">Add Item</a>
+<table id="items" class="table table-hover display">
+    <thead>
+        <tr scope="row">
+            <th>Id</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Producer</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Active</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr scope="row">
+                <td>@item.Id</td>
+                <td><a asp-controller="Item" asp-action="ItemDetails" 
+                       asp-route-itemId="@item.Id">@item.Name</a></td>
+                <td><a asp-controller="Category" asp-action="CategoryDetails" 
+                       asp-route-categoryId="@item.CategoryId">@item.Category.Name</a></td>
+                <td><a asp-controller="Producer" asp-action="ProducerDetails" 
+                       asp-route-producerId="@item.ProducerId">@item.Producer.Name</a></td>
+                <td>@item.Price $</td>
+                <td>@item.UnitInStock pcs.</td>
+                @if (item.IsDeleted)
+                {
+                    <td><span class="badge badge-danger">Deleted</span></td>
+                }
+                else
+                {
+                    <td><span class="badge badge-success">Active</span></td>
+                }
+                <td><a asp-controller="Item" asp-action="EditItem" 
+                       asp-route-itemId="@item.Id" class="btn btn-outline-secondary">Edit</a></td>
+                <td><a asp-controller="Item" asp-action="DeleteItem" 
+                       asp-route-itemId="@item.Id" class="btn btn-outline-danger">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#items').DataTable({
+                columns: [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { orderable: false },
+                    { orderable: false }
+                ]
+            });
+        });
+    </script>
+}

@@ -1,0 +1,19 @@
+﻿@model Warehouse.Web.ViewModels.ClientViewModel
+@{
+    ViewBag.Title = $"Producer - {Model.Name}";
+    Layout = "_Layout";
+}
+@if (Model.IsCustomer)
+{
+    <h1>+ Customer</h1>
+}
+@if (Model.IsProvider)
+{
+    <h1>+ Provider</h1>
+}
+<h1>Name: @Model.Nickname</h1>
+<h3>First Name: @Model.Name</h3>
+<h3>Last Name: @Model.Surname</h3>
+<h3>Phone: @Model.Phone</h3>
+<h3>Address: @Model.Address</h3>
+<h3>Description: @Model.Description</h3>

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Warehouse.Bll.Dtos.ClientDto>
+@{
+    ViewBag.Title = "Clients";
+    Layout = "_Layout";
+}
+<h1>Clients</h1>
+<a asp-controller="Client" asp-action="CreateClient" class="btn btn-outline-dark">Add Client</a>
+<a asp-controller="Client" asp-action="GetAllClients" class="btn btn-outline-dark">All Clients</a>
+<a asp-controller="Client" asp-action="GetAllCustomerClients" class="btn btn-outline-dark">Customers</a>
+<a asp-controller="Client" asp-action="GetAllProviderClients" class="btn btn-outline-dark">Providers</a>
+<table id="clients" class="table table-hover display">
+    <thead>
+        <tr scope="row">
+            <th>Id</th>
+            <th>Name</th>
+            <th>Customer</th>
+            <th>Provider</th>
+            <th>Active</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var client in Model)
+        {
+            <tr scope="row">
+                <td>@client.Id</td>
+                <td>@client.Nickname</td>
+                @if (client.IsCustomer)
+                {
+                    <td><span class="badge badge-success">Yes</span></td>
+                }
+                else
+                {
+                    <td><span class="badge badge-danger">No</span></td>
+                }
+                @if (client.IsProvider)
+                {
+                    <td><span class="badge badge-success">Yes</span></td>
+                }
+                else
+                {
+                    <td><span class="badge badge-danger">No</span></td>
+                }
+                @if (client.IsDeleted)
+                {
+                    <td><span class="badge badge-danger">Deleted</span></td>
+                }
+                else
+                {
+                    <td><span class="badge badge-success">Active</span></td>
+                }
+                <td><a asp-controller="Client" asp-action="EditClient" asp-route-clientId="@client.Id" class="btn btn-outline-secondary">Edit</a></td>
+                <td><a asp-controller="Client" asp-action="DeleteClient" asp-route-clientId="@client.Id" class="btn btn-outline-danger">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#clients').DataTable({
+                columns: [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { orderable: false },
+                    { orderable: false }
+                ]
+            });
+        });
+    </script>
+}

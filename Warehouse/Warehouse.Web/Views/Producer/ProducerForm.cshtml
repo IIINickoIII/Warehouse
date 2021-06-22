@@ -1,0 +1,31 @@
+﻿@model Warehouse.Web.ViewModels.ProducerViewModel
+@{
+    ViewBag.Title = "Producer";
+    Layout = "_Layout";
+}
+<h1>Producer</h1>
+<form method="post" asp-controller="Producer" asp-action="Save">
+    <div class="form-group">
+        <label asp-for="Name" class="col-form-label"></label><br />
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description" class="col-form-label"></label><br />
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Phone" class="col-form-label"></label><br />
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Address" class="col-form-label"></label><br />
+        <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+    <input asp-for="Id" type="hidden" />
+    <input asp-for="IsDeleted" type="hidden" />
+    <input type="submit" value="Save" />
+</form>

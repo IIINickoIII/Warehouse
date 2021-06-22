@@ -1,0 +1,12 @@
+﻿@model Warehouse.Web.ViewModels.ItemViewModel
+@{
+    ViewBag.Title = $"Producer - {Model.Name}";
+    Layout = "_Layout";
+}
+<h1>@Model.Name</h1>
+<h3>Description: @Model.Description</h3>
+<h3>Category: <a asp-controller="Category" asp-action="CategoryDetails" asp-route-categoryId="@Model.Category.Id" >@Model.Category.Name</a></h3>
+<h3>Producer: <a asp-controller="Producer" asp-action="ProducerDetails" asp-route-producerId="@Model.Producer.Id" >@Model.Producer.Name</a></h3>
+<h3>Discount: @Model.Discount</h3>
+<h3>Price: @Model.Price $</h3>
+<h3>Unit In Stock: @Model.UnitInStock</h3>

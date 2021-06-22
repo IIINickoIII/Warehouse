@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Warehouse.Bll.Dtos.OrderDto>
+@{
+    ViewBag.Title = "Incomes";
+    Layout = "_Layout";
+}
+<h1>Incomes</h1>
+<a asp-controller="Order" asp-action="CreateOrder" class="btn btn-outline-dark">Add Order</a>
+<table id="orders" class="table table-hover display">
+    <thead>
+        <tr scope="row">
+            <th>Id</th>
+            <th>Date</th>
+            <th>Client</th>
+            <th>Total Sum</th>
+            <th>Payed</th>
+            <th>Delivered</th>
+            <th>Active</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr scope="row">
+                <td>@order.Id</td>
+                <td>@order.Date.ToShortDateString() @order.Date.ToShortTimeString()</td>
+                <td>@order.Client.Name</td>
+                <td>@order.TotalSum $</td>
+                @if (order.IsPayed)
+                {
+                    <td><span class="badge badge-success">+</span></td>
+                }
+                else
+                {
+                    <td><span class="badge badge-danger">-</span></td>
+                }
+                @if (order.IsDelivered)
+                {
+                    <td><span class="badge badge-success">+</span></td>
+                }
+                else
+                {
+                    <td><span class="badge badge-danger">-</span></td>
+                }
+                @if (order.IsDeleted)
+                {
+                    <td><span class="badge badge-danger">Deleted</span></td>
+                }
+                else
+                {
+                    <td><span class="badge badge-success">Active</span></td>
+                }
+                <td><a asp-controller="Order" asp-action="EditOrder" asp-route-orderId="@order.Id" class="btn btn-outline-secondary">Edit</a></td>
+                <td><a asp-controller="Order" asp-action="DeleteOrder" asp-route-orderId="@order.Id" class="btn btn-outline-danger">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#orders').DataTable({
+                columns: [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { orderable: false },
+                    { orderable: false }
+                ]
+            });
+        });
+    </script>
+}

@@ -1,0 +1,112 @@
+﻿@model Warehouse.Web.ViewModels.OrderViewModel
+@{
+    ViewBag.Title = "Order";
+    Layout = "_Layout";
+}
+<h1>Order</h1>
+<form method="post" asp-controller="Order" asp-action="Save">
+    <div class="form-group">
+        <label asp-for="Date" class="col-form-label"></label><br />
+        <input asp-for="Date" class="form-control" />
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ClientId" class="col-form-label"></label>
+        <select asp-for="ClientId" asp-items="@Model.ClientSelectList"></select>
+        <span asp-validation-for="ClientId" class="text-danger"></span>
+    </div>
+    <fieldset class="form-group">
+        <div class="form-check">
+            <input asp-for="IsIncome" class="form-check-input">
+            <label asp-for="IsIncome" class="form-check-label"></label>
+            <span asp-validation-for="IsIncome" class="text-danger"></span>
+        </div>
+        <div class="form-check">
+            <input asp-for="IsPayed" class="form-check-input">
+            <label asp-for="IsPayed" class="form-check-label"></label>
+            <span asp-validation-for="IsPayed" class="text-danger"></span>
+        </div>
+        <div class="form-check">
+            <input asp-for="IsDelivered" class="form-check-input">
+            <label asp-for="IsDelivered" class="form-check-label"></label>
+            <span asp-validation-for="IsDelivered" class="text-danger"></span>
+        </div>
+    </fieldset>
+    <div class="form-group">
+            <h5>Total Sum: @Model.TotalSum $</h5>
+    </div>
+    @{
+        if (Model.Client != null)
+        {
+            <div class="form-group">
+                <h5><a asp-controller="Client" asp-action="ClientDetails" asp-route-clientId="@Model.ClientId" class="btn btn-outline-dark">@Model.Client.Nickname</a></h5>
+            </div>
+        }
+    }
+    <input asp-for="Id" type="hidden" />
+    <input asp-for="IsDeleted" type="hidden" />
+    <input asp-for="IsClosedForEdit" type="hidden" />
+    <input asp-for="TotalSum" type="hidden" />
+    <input type="submit" value="Save" />
+</form>
+<h5>
+    OrderItems
+    @{
+        if (Model.Id > 0)
+        {
+            <a asp-controller="OrderItem" asp-action="CreateOrderItem" asp-route-orderId="@Model.Id" class="btn btn-outline-dark">Add Order Item</a>
+            <a class="btn btn-warning" asp-controller="Order" asp-action="DownloadOrder" asp-route-orderId="@Model.Id">Download Order</a>
+        }
+    }
+</h5>
+<table id="orderItems" class="table table-hover display">
+    <thead>
+        <tr scope="row">
+            <th>#</th>
+            <th>Item</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Discount</th>
+            <th>Stock Sum</th>
+            <th>Final Sum</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{ int rowCounter = 1; }
+        @foreach (var orderItem in Model.OrderItems)
+        {
+            <tr scope="row">
+                <td>@rowCounter</td>
+                <td><a asp-controller="Item" asp-action="ItemDetails" asp-route-itemId="@orderItem.Item.Id" class="btn btn-outline-secondary">@orderItem.Item.Name</a></td>
+                <td>@orderItem.Price $</td>
+                <td>@orderItem.Quantity pcs.</td>
+                <td>@orderItem.Discount %</td>
+                <td>@orderItem.SumWithoutDiscount $</td>
+                <td>@orderItem.SumWithDiscount $</td>
+                <td><a asp-controller="OrderItem" asp-action="EditOrderItem" asp-route-orderItemId="@orderItem.Id" class="btn btn-outline-secondary">Edit</a></td>
+                <td><a asp-controller="OrderItem" asp-action="DeleteOrderItem" asp-route-orderItemId="@orderItem.Id" class="btn btn-outline-danger">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#orderItems').DataTable({
+                columns: [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { orderable: false },
+                    { orderable: false }
+                ]
+            });
+        });
+    </script>
+}

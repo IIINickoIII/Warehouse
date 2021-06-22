@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Warehouse.Bll.Dtos.ProducerDto>
+@{
+    ViewBag.Title = "Producers";
+    Layout = "_Layout";
+}
+<h1>Producers</h1>
+<a asp-controller="Producer" asp-action="CreateProducer" class="btn btn-outline-dark">Add Producer</a>
+<table id="producers" class="table table-hover display">
+    <thead>
+        <tr scope="row">
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Active</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var producer in Model)
+        {
+            <tr scope="row">
+                <td>@producer.Id</td>
+                <td><a asp-controller="Producer" asp-action="ProducerDetails" asp-route-producerId="@producer.Id">@producer.Name</a></td>
+                <td>@producer.Description</td>
+                <td>@producer.Phone</td>
+                <td>@producer.Address</td>
+                @if (producer.IsDeleted)
+                {
+                    <td><span class="badge badge-danger">Deleted</span></td>
+                }
+                else
+                {
+                    <td><span class="badge badge-success">Active</span></td>
+                }
+                <td><a asp-controller="Producer" asp-action="EditProducer" asp-route-producerId="@producer.Id" class="btn btn-outline-secondary">Edit</a></td>
+                <td><a asp-controller="Producer" asp-action="DeleteProducer" asp-route-producerId="@producer.Id" class="btn btn-outline-danger">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#producers').DataTable({
+                columns: [
+                    null,
+                    null,
+                    null,
+                    { orderable: false },
+                    null,
+                    null,
+                    { orderable: false },
+                    { orderable: false }
+                ]
+            });
+        });
+    </script>
+}

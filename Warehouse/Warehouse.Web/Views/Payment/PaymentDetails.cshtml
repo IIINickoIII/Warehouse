@@ -1,0 +1,16 @@
+﻿@model Warehouse.Web.ViewModels.PaymentViewModel
+@{
+    ViewBag.Title = $"Payment - {Model.Client.Name}";
+    Layout = "_Layout";
+}
+<h1>Date: @Model.Date.ToShortDateString() @Model.Date.ToShortTimeString()</h1>
+<h3>Total sum: @Model.TotalSum $</h3>
+<h3>Client: <a asp-controller="Client" asp-action="ClientDetails" asp-route-clientId="@Model.Client.Id">@Model.Client.Name</a></h3>
+@if (Model.IsInCome == true)
+{
+    <h3>Income</h3>
+}
+else
+{
+    <h3>Outcome</h3>
+}

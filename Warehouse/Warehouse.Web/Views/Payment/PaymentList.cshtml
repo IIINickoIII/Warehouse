@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Warehouse.Bll.Dtos.PaymentDto>
+@{
+    ViewBag.Title = "Payments";
+    Layout = "_Layout";
+}
+<h1>Payments</h1>
+<a asp-controller="Payment" asp-action="CreatePayment" class="btn btn-outline-dark">Add Payment</a>
+<table id="payments" class="table table-hover display">
+    <thead>
+        <tr scope="row">
+            <th>Id</th>
+            <th>Date</th>
+            <th>Client</th>
+            <th>Total Sum</th>
+            <th>Income</th>
+            <th>Active</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var payment in Model)
+        {
+            <tr scope="row">
+                <td>@payment.Id</td>
+                <td>@payment.Date.ToShortDateString() @payment.Date.ToShortTimeString()</td>
+                <td>@payment.Client.Name</td>
+                <td>@payment.TotalSum $</td>
+                @if (payment.IsInCome)
+                {
+                    <td><span class="badge badge-success">+</span></td>
+                }
+                else
+                {
+                    <td><span class="badge badge-danger">-</span></td>
+                }
+                @if (payment.IsDeleted)
+                {
+                    <td><span class="badge badge-danger">Deleted</span></td>
+                }
+                else
+                {
+                    <td><span class="badge badge-success">Active</span></td>
+                }
+                <td><a asp-controller="Payment" asp-action="EditPayment" asp-route-paymentId="@payment.Id" class="btn btn-outline-secondary">Edit</a></td>
+                <td><a asp-controller="Payment" asp-action="DeletePayment" asp-route-paymentId="@payment.Id" class="btn btn-outline-danger">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#payments').DataTable({
+                columns: [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { orderable: false },
+                    { orderable: false }
+                ]
+            });
+        });
+    </script>
+}

@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Warehouse.Bll.Dtos.CategoryDto>
+@{
+    ViewBag.Title = "Categories";
+    Layout = "_Layout";
+}
+<h1>Categories</h1>
+<a asp-controller="Category" asp-action="CreateCategory" class="btn btn-outline-dark">Add Category</a>
+<table id="categories" class="table table-hover display">
+    <thead>
+        <tr scope="row">
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Active</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr scope="row">
+                <td>@category.Id</td>
+                <td><a asp-controller="Category" asp-action="CategoryDetails" asp-route-categoryId="@category.Id">@category.Name</a></td>
+                <td>@category.Description</td>
+                @if (category.IsDeleted)
+                {
+                    <td><span class="badge badge-danger">Deleted</span></td>
+                }
+                else
+                {
+                    <td><span class="badge badge-success">Active</span></td>
+                }
+                <td><a asp-controller="Category" asp-action="EditCategory" asp-route-categoryId="@category.Id" class="btn btn-outline-secondary">Edit</a></td>
+                <td><a asp-controller="category" asp-action="DeleteCategory" asp-route-categoryId="@category.Id" class="btn btn-outline-danger">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#categories').DataTable({
+                columns: [
+                    null,
+                    null,
+                    null,
+                    null,
+                    { orderable: false },
+                    { orderable: false }
+                ]
+            });
+        });
+    </script>
+}
